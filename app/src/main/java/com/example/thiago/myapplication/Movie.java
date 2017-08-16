@@ -6,6 +6,7 @@ package com.example.thiago.myapplication;
 
 public class Movie {
 
+    int identifier;
     String VOTE_COUNT;
     String ID;
     String VIDEO;
@@ -44,6 +45,14 @@ public class Movie {
         this.isAdult = isAdult;
         this.OVERVIEW = OVERVIEW;
         this.RELEASE_DATE = RELEASE_DATE;
+    }
+
+    public int getIdentifier() {
+        return identifier;
+    }
+
+    public void setIdentifier(int identifier) {
+        this.identifier = identifier;
     }
 
     public String getVOTE_COUNT() {
