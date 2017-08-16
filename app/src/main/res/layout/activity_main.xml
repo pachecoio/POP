@@ -6,11 +6,18 @@
     android:layout_height="match_parent"
     tools:context="com.example.thiago.myapplication.MainActivity">
 
-    <TextView
-        android:id="@+id/tv_movies_json"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:padding="16dp" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_movies_json"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:padding="16dp" />
+
+    </ScrollView>
+
 
 </FrameLayout>
