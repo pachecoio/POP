@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.thiago.myapplication.DetailActivity"
+    tools:showIn="@layout/activity_detail"
+    android:paddingTop="7dp"
+    android:background="@color/colorBodyPrimary">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:id="@+id/original_title_title"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:text="Original title: "
+            android:textSize="18dp"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"
+            android:paddingTop="18dp"
+            android:paddingLeft="18dp" />
+
+        <TextView
+            android:id="@+id/original_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:layout_toRightOf="@id/original_title_title"
+            android:textAlignment="inherit"
+            android:textColor="#FFFFFF"
+            android:paddingTop="20dp"
+            android:paddingRight="18dp"/>
+
+        <TextView
+            android:id="@+id/overview_title"
+            android:text="Synopsis: "
+            android:textSize="18dp"
+            android:layout_below="@id/original_title_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"
+            android:paddingTop="18dp"
+            android:paddingLeft="18dp" />
+
+        <TextView
+            android:id="@+id/overview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:layout_toRightOf="@id/overview_title"
+            android:textAlignment="inherit"
+            android:textColor="#FFFFFF"
+            android:layout_below="@id/original_title_title"
+            android:paddingRight="16dp"
+            android:paddingTop="20dp"/>
+
+        <TextView
+            android:id="@+id/user_rating_title"
+            android:text="User rating: "
+            android:textSize="18dp"
+            android:layout_below="@id/overview"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"
+            android:paddingTop="18dp"
+            android:paddingLeft="18dp" />
+
+        <TextView
+            android:id="@+id/user_rating"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:layout_toRightOf="@id/user_rating_title"
+            android:textAlignment="inherit"
+            android:textColor="#FFFFFF"
+            android:layout_below="@id/overview"
+            android:paddingRight="16dp"
+            android:paddingTop="20dp"/>
+
+        <TextView
+            android:id="@+id/release_date_title"
+            android:text="Release date: "
+            android:textSize="18dp"
+            android:layout_below="@id/user_rating"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"
+            android:paddingTop="18dp"
+            android:paddingLeft="18dp" />
+
+        <TextView
+            android:id="@+id/release_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:layout_toRightOf="@id/release_date_title"
+            android:textAlignment="inherit"
+            android:textColor="#FFFFFF"
+            android:layout_below="@id/user_rating"
+            android:paddingRight="16dp"
+            android:paddingTop="20dp"/>
+
+    </RelativeLayout>
+
+
+</android.support.v4.widget.NestedScrollView>

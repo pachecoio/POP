@@ -1,14 +1,13 @@
 package com.example.thiago.myapplication;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -24,26 +23,13 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 
-public class MainActivity extends AppCompatActivity implements MyAdapter.ListItemClickListener{
-
-    //TextView mPopularMoviesTextView;
-
-    private static final int NUM_LIST_ITEMS = 100;
-    private String[] names;
-
-    private MyAdapter mAdapter;
+public class MainActivity extends AppCompatActivity {
 
     RecyclerView rv_movies;
     ProgressBar progressBar;
     TextView errorMessage;
 
     GridLayoutManager layoutManager;
-
-    String LIST_STATE_KEY;
-
-    Parcelable listState;
-
-    String url = "https://api.themoviedb.org/3/movie/popular?page=1&language=en-US&api_key=456cfaff4e1856ad9bc68406e43b271f";
 
     String MOST_POPULAR = "https://api.themoviedb.org/3/movie/popular?page=1&language=en-US&api_key=456cfaff4e1856ad9bc68406e43b271f";
     String TOP_RATED = "https://api.themoviedb.org/3/movie/top_rated?page=1&language=en-US&api_key=456cfaff4e1856ad9bc68406e43b271f";
@@ -58,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.ListIte
         errorMessage = (TextView)findViewById(R.id.error_message);
 
         OkHttpHandler okHttpHandler= new OkHttpHandler();
-        okHttpHandler.execute(TOP_RATED);
+        okHttpHandler.execute(MOST_POPULAR);
 
     }
 
@@ -72,9 +58,11 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.ListIte
         errorMessage.setVisibility(View.VISIBLE);
     }
 
-    public class OkHttpHandler extends AsyncTask<Object, Object, String> implements MyAdapter.ListItemClickListener{
+    public class OkHttpHandler extends AsyncTask<Object, Object, String> implements NewAdapter.ListItemClickListener{
 
         OkHttpClient client = new OkHttpClient();
+
+        ArrayList<Movie> movies;
 
         @Override
         protected void onPreExecute() {
@@ -103,14 +91,15 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.ListIte
             try {
                 ArrayList<Movie> movieArrayList = JSONUtils.getJSONFromString(MainActivity.this, s);
 
+                movies = movieArrayList;
+
                 rv_movies = (RecyclerView)findViewById(R.id.rv_movies);
 
                 layoutManager = new GridLayoutManager(MainActivity.this,3);
                 rv_movies.setLayoutManager(layoutManager);
                 rv_movies.setHasFixedSize(true);
-
-                mAdapter = new MyAdapter(movieArrayList.size(), movieArrayList, this);
-                rv_movies.setAdapter(mAdapter);
+                NewAdapter newAdapter = new NewAdapter(movieArrayList.size(), movieArrayList, this);
+                rv_movies.setAdapter(newAdapter);
 
                 progressBar.setVisibility(View.INVISIBLE);
                 showMovies();
@@ -126,44 +115,39 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.ListIte
 
         @Override
         public void onListItemClick(int clickedItemIndex) {
-            Toast.makeText(MainActivity.this, "Teste"+clickedItemIndex, Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+            intent.putExtra("vote_count",movies.get(clickedItemIndex).getVOTE_COUNT());
+            intent.putExtra("id",movies.get(clickedItemIndex).getID());
+            intent.putExtra("video", movies.get(clickedItemIndex).getVIDEO());
+            intent.putExtra("vote_average", movies.get(clickedItemIndex).getVOTE_AVERAGE());
+            intent.putExtra("title",movies.get(clickedItemIndex).getTITLE());
+            intent.putExtra("popularity",movies.get(clickedItemIndex).getPOPULARITY());
+            intent.putExtra("poster_path",movies.get(clickedItemIndex).getPOSTER_PATH());
+            intent.putExtra("original_language",movies.get(clickedItemIndex).getORIGINAL_LANGUAGE());
+            intent.putExtra("original_title",movies.get(clickedItemIndex).getORIGINAL_TITLE());
+            intent.putExtra("isAdult",movies.get(clickedItemIndex).isAdult);
+            intent.putExtra("overview",movies.get(clickedItemIndex).getOVERVIEW());
+            intent.putExtra("release_date",movies.get(clickedItemIndex).getRELEASE_DATE());
+            startActivity(intent);
+
         }
     }
 
     @Override
-    public void onListItemClick(int clickedItemIndex) {
-
-        Toast.makeText(this, "Teste", Toast.LENGTH_SHORT).show();
-        //Toast.makeText(this, "item: " + names[clickedItemIndex], Toast.LENGTH_SHORT).show();
-    }
-
-    //----------------------------------------
-    //onsaveinstance
-
-
-    @Override
-    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
-
-        outState.putParcelable(LIST_STATE_KEY, layoutManager.onSaveInstanceState());
-
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_detail, menu);
+        return true;
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
+    public boolean onOptionsItemSelected(MenuItem item) {
 
-        listState = savedInstanceState.getParcelable(LIST_STATE_KEY);
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        if(listState != null){
-            layoutManager.onRestoreInstanceState(listState);
+        if(item.getItemId() == R.id.action_settings){
+            Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT).show();
         }
 
+        return super.onOptionsItemSelected(item);
     }
+
 }
