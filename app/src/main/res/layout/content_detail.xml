@@ -7,12 +7,15 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.thiago.myapplication.DetailActivity"
     tools:showIn="@layout/activity_detail"
-    android:paddingTop="7dp"
     android:background="@color/colorBodyPrimary">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="#363636"></RelativeLayout>
 
 
         <TextView

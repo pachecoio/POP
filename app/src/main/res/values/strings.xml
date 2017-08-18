@@ -93,5 +93,10 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="action_settings">Settings</string>
+    <string name="app_title">Popular Movies</string>
+
+    <string name="pref_movie_label">Filter</string>
+    <string name="pref_movie_most_popular">https://api.themoviedb.org/3/movie/popular?page=1&amp;language=en-US&amp;api_key=456cfaff4e1856ad9bc68406e43b271f</string>
+    <string name="pref_movie_top_rated">https://api.themoviedb.org/3/movie/top_rated?page=1&amp;language=en-US&amp;api_key=456cfaff4e1856ad9bc68406e43b271f</string>
 
 </resources>

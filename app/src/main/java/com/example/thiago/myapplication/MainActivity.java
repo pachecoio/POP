@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         errorMessage = (TextView)findViewById(R.id.error_message);
 
         OkHttpHandler okHttpHandler= new OkHttpHandler();
-        okHttpHandler.execute(MOST_POPULAR);
+        okHttpHandler.execute(getResources().getString(R.string.pref_movie_most_popular));
 
     }
 
@@ -144,7 +144,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if(item.getItemId() == R.id.action_settings){
-            Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);

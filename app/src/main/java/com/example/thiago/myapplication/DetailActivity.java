@@ -87,7 +87,8 @@ public class DetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if(item.getItemId() == R.id.action_settings){
-            Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(DetailActivity.this, SettingsActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
