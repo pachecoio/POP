@@ -1,14 +1,18 @@
 package com.example.thiago.myapplication;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,16 +27,22 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener{
 
     RecyclerView rv_movies;
     ProgressBar progressBar;
     TextView errorMessage;
 
-    GridLayoutManager layoutManager;
+    TextView numberOfPages;
 
-    String MOST_POPULAR = "https://api.themoviedb.org/3/movie/popular?page=1&language=en-US&api_key=456cfaff4e1856ad9bc68406e43b271f";
-    String TOP_RATED = "https://api.themoviedb.org/3/movie/top_rated?page=1&language=en-US&api_key=456cfaff4e1856ad9bc68406e43b271f";
+    ImageView arrowNext;
+    ImageView arrowPrevious;
+
+    int pages = 1;
+
+    String url;
+
+    GridLayoutManager layoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +50,38 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         progressBar = (ProgressBar)findViewById(R.id.progress_bar);
-
         errorMessage = (TextView)findViewById(R.id.error_message);
+        errorMessage.setText(getString(R.string.error_message));
+        arrowNext = (ImageView)findViewById(R.id.arrow_next);
+        arrowPrevious = (ImageView)findViewById(R.id.arrow_previous);
+        numberOfPages = (TextView)findViewById(R.id.number_of_page);
+        rv_movies = (RecyclerView)findViewById(R.id.rv_movies);
 
+        showListOfMovies();
+        //setupSharedPreferences();
+    }
+
+    public void showListOfMovies(){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String prefMovieString = sharedPreferences.getString(getString(R.string.pref_filter_key),getString(R.string.pref_movie_most_popular));
+        url = prefMovieString + pages + getResources().getString(R.string.pref_movie_complement);
+        Log.i("sharedvalue",url);
         OkHttpHandler okHttpHandler= new OkHttpHandler();
-        okHttpHandler.execute(getResources().getString(R.string.pref_movie_most_popular));
+        okHttpHandler.execute(url);
+        numberOfPages.setText("Page " + String.valueOf(pages));
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+    }
 
+    public void showNextPage(View view){
+        pages++;
+        showListOfMovies();
+    }
+
+    public void showPreviousPage(View view){
+        if(pages > 1) {
+            pages--;
+            showListOfMovies();
+        }
     }
 
     public void showMovies(){
@@ -56,6 +92,14 @@ public class MainActivity extends AppCompatActivity {
     public void showErrorMessage(){
         rv_movies.setVisibility(View.INVISIBLE);
         errorMessage.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if(key.equals(getString(R.string.pref_filter_key))){
+            pages = 1;
+            showListOfMovies();
+        }
     }
 
     public class OkHttpHandler extends AsyncTask<Object, Object, String> implements NewAdapter.ListItemClickListener{
@@ -151,4 +195,9 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(this);
+    }
 }

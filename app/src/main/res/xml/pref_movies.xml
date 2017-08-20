@@ -2,5 +2,11 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     
+    <ListPreference
+        android:defaultValue="@string/pref_movie_most_popular"
+        android:entries="@array/pref_movie_options_label"
+        android:entryValues="@array/pref_movie_options_values"
+        android:key="@string/pref_filter_key"
+        android:title="@string/pref_filter_label"/>
 
 </PreferenceScreen>

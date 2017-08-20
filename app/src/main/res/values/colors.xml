@@ -6,5 +6,6 @@
     <color name="colorBodyPrimary">#424242</color>
 
     <color name="white">#FFFFFF</color>
+    <color name="grey">#a6a6a6</color>
 
 </resources>
