@@ -59,7 +59,6 @@ public class NewAdapter extends RecyclerView.Adapter<NewAdapter.MyAdapterViewHol
                                 .noPlaceholder()
                                 .into(holder.posterImageView);
                     }
-
                     @Override
                     public void onError() {
                         Picasso
