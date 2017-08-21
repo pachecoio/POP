@@ -10,6 +10,7 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,7 +33,7 @@ import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener{
 
-    private RecyclerView rv_movies;
+    private RecyclerView rvMovies;
     private ProgressBar progressBar;
     private TextView errorMessage;
 
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         arrowNext = (ImageView)findViewById(R.id.arrow_next);
         arrowPrevious = (ImageView)findViewById(R.id.arrow_previous);
         numberOfPages = (TextView)findViewById(R.id.number_of_page);
-        rv_movies = (RecyclerView)findViewById(R.id.rv_movies);
+        rvMovies = (RecyclerView)findViewById(R.id.rv_movies);
 
         showListOfMovies();
         //setupSharedPreferences();
@@ -99,12 +100,12 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     }
 
     public void showMovies(){
-        rv_movies.setVisibility(View.VISIBLE);
+        rvMovies.setVisibility(View.VISIBLE);
         errorMessage.setVisibility(View.INVISIBLE);
     }
 
     public void showErrorMessage(){
-        rv_movies.setVisibility(View.INVISIBLE);
+        rvMovies.setVisibility(View.INVISIBLE);
         errorMessage.setVisibility(View.VISIBLE);
     }
 
@@ -151,13 +152,13 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
 
                 movies = movieArrayList;
 
-                rv_movies = (RecyclerView)findViewById(R.id.rv_movies);
+                rvMovies = (RecyclerView)findViewById(R.id.rv_movies);
 
-                layoutManager = new GridLayoutManager(MainActivity.this,3);
-                rv_movies.setLayoutManager(layoutManager);
-                rv_movies.setHasFixedSize(true);
+                layoutManager = new GridLayoutManager(MainActivity.this,numberOfColumns());
+                rvMovies.setLayoutManager(layoutManager);
+                rvMovies.setHasFixedSize(true);
                 NewAdapter newAdapter = new NewAdapter(movieArrayList.size(), movieArrayList, this);
-                rv_movies.setAdapter(newAdapter);
+                rvMovies.setAdapter(newAdapter);
 
                 progressBar.setVisibility(View.INVISIBLE);
                 showMovies();
@@ -166,9 +167,17 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
                 e.printStackTrace();
                 showErrorMessage();
             }
+        }
 
-
-
+        private int numberOfColumns() {
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            // You can change this divider to adjust the size of the poster
+            int widthDivider = 400;
+            int width = displayMetrics.widthPixels;
+            int nColumns = width / widthDivider;
+            if (nColumns < 2) return 2;
+            return nColumns;
         }
 
         @Override

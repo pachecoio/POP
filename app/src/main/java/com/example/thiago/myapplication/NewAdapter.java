@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -43,9 +44,31 @@ public class NewAdapter extends RecyclerView.Adapter<NewAdapter.MyAdapterViewHol
     }
 
     @Override
-    public void onBindViewHolder(MyAdapterViewHolder holder, int position) {
-        String imageLink = IMAGE_URL + movieArrayList.get(position).getPOSTER_PATH();
-        Picasso.with(context).load(imageLink).into(holder.posterImageView);
+    public void onBindViewHolder(final MyAdapterViewHolder holder, int position) {
+        final String imageLink = IMAGE_URL + movieArrayList.get(position).getPOSTER_PATH();
+        Picasso
+                .with(context)
+                .load(imageLink)
+                .placeholder(R.mipmap.ic_launcher)
+                .into(holder.posterImageView, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        Picasso
+                                .with(context)
+                                .load(imageLink)
+                                .noPlaceholder()
+                                .into(holder.posterImageView);
+                    }
+
+                    @Override
+                    public void onError() {
+                        Picasso
+                                .with(context)
+                                .load(imageLink)
+                                .error(R.drawable.error)
+                                .into(holder.posterImageView);
+                    }
+                });
     }
 
     @Override
