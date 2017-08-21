@@ -1,0 +1,1 @@
+The line api_key in the strings.xml file must be updated with your API KEY from TheMovieDB.

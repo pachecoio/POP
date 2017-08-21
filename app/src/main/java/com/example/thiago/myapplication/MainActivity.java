@@ -29,20 +29,20 @@ import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener{
 
-    RecyclerView rv_movies;
-    ProgressBar progressBar;
-    TextView errorMessage;
+    private RecyclerView rv_movies;
+    private ProgressBar progressBar;
+    private TextView errorMessage;
 
-    TextView numberOfPages;
+    private TextView numberOfPages;
 
-    ImageView arrowNext;
-    ImageView arrowPrevious;
+    private ImageView arrowNext;
+    private ImageView arrowPrevious;
 
-    int pages = 1;
+    private int pages = 1;
 
-    String url;
+    private String url;
 
-    GridLayoutManager layoutManager;
+    private GridLayoutManager layoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,11 +64,11 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
     public void showListOfMovies(){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String prefMovieString = sharedPreferences.getString(getString(R.string.pref_filter_key),getString(R.string.pref_movie_most_popular));
-        url = prefMovieString + pages + getResources().getString(R.string.pref_movie_complement);
+        url = prefMovieString + pages + getResources().getString(R.string.pref_movie_complement) + getResources().getString(R.string.api_key);
         Log.i("sharedvalue",url);
         OkHttpHandler okHttpHandler= new OkHttpHandler();
         okHttpHandler.execute(url);
-        numberOfPages.setText("Page " + String.valueOf(pages));
+        numberOfPages.setText(getResources().getString(R.string.page) + " " + String.valueOf(pages));
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
     }
 

@@ -17,13 +17,13 @@ import java.util.ArrayList;
 
 public class NewAdapter extends RecyclerView.Adapter<NewAdapter.MyAdapterViewHolder>{
 
-    Context context;
+    private Context context;
 
-    final private ListItemClickListener mOnClickListener;
+    private final ListItemClickListener mOnClickListener;
 
-    ArrayList<Movie> movieArrayList;
-    int movieLenght;
-    final String IMAGE_URL = "https://image.tmdb.org/t/p/w500/";
+    private ArrayList<Movie> movieArrayList;
+    private int movieLenght;
+    private final String IMAGE_URL = "https://image.tmdb.org/t/p/w500/";
 
     public NewAdapter(int movieLenght, ArrayList<Movie> movieArrayList, ListItemClickListener listener){
         this.movieLenght = movieLenght;

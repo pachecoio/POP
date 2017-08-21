@@ -6,19 +6,19 @@ package com.example.thiago.myapplication;
 
 public class Movie {
 
-    int identifier;
-    String VOTE_COUNT;
-    String ID;
-    String VIDEO;
-    String VOTE_AVERAGE;
-    String TITLE;
-    String POPULARITY;
-    String POSTER_PATH;
-    String ORIGINAL_LANGUAGE;
-    String ORIGINAL_TITLE;
+    private int identifier;
+    private String VOTE_COUNT;
+    private String ID;
+    private String VIDEO;
+    private String VOTE_AVERAGE;
+    private String TITLE;
+    private String POPULARITY;
+    private String POSTER_PATH;
+    private String ORIGINAL_LANGUAGE;
+    private String ORIGINAL_TITLE;
     Boolean isAdult;
-    String OVERVIEW;
-    String RELEASE_DATE;
+    private String OVERVIEW;
+    private String RELEASE_DATE;
 
     public Movie(String VOTE_COUNT,
                  String ID,

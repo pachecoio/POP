@@ -24,12 +24,12 @@ import com.squareup.picasso.Target;
 
 public class DetailActivity extends AppCompatActivity {
 
-    final String IMAGE_URL = "https://image.tmdb.org/t/p/w500/";
+    private final String IMAGE_URL = "https://image.tmdb.org/t/p/w500/";
 
-    TextView mOriginalTitleTextView;
-    TextView mOverviewTextView;
-    TextView mUserRatingTextView;
-    TextView mReleaseDateTextView;
+    private TextView mOriginalTitleTextView;
+    private TextView mOverviewTextView;
+    private TextView mUserRatingTextView;
+    private TextView mReleaseDateTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
