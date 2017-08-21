@@ -64,7 +64,6 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         //setupSharedPreferences();
     }
 
-
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(MainActivity.this.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
