@@ -2,6 +2,8 @@ package com.example.thiago.myapplication;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -21,6 +23,7 @@ import android.widget.Toast;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -61,15 +64,26 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
         //setupSharedPreferences();
     }
 
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(MainActivity.this.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
     public void showListOfMovies(){
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String prefMovieString = sharedPreferences.getString(getString(R.string.pref_filter_key),getString(R.string.pref_movie_most_popular));
-        url = prefMovieString + pages + getResources().getString(R.string.pref_movie_complement) + getResources().getString(R.string.api_key);
-        Log.i("sharedvalue",url);
-        OkHttpHandler okHttpHandler= new OkHttpHandler();
-        okHttpHandler.execute(url);
-        numberOfPages.setText(getResources().getString(R.string.page) + " " + String.valueOf(pages));
-        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+        if(isNetworkAvailable()) {
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            String prefMovieString = sharedPreferences.getString(getString(R.string.pref_filter_key), getString(R.string.pref_movie_most_popular));
+            url = prefMovieString + pages + getResources().getString(R.string.pref_movie_complement) + getResources().getString(R.string.api_key);
+            Log.i("sharedvalue", url);
+            OkHttpHandler okHttpHandler = new OkHttpHandler();
+            okHttpHandler.execute(url);
+            numberOfPages.setText(getResources().getString(R.string.page) + " " + String.valueOf(pages));
+            sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+            showMovies();
+        }else{
+            showErrorMessage();
+        }
     }
 
     public void showNextPage(View view){
