@@ -127,8 +127,7 @@ public class MainActivity extends AppCompatActivity implements SharedPreferences
             super.onPreExecute();
             progressBar.setVisibility(View.VISIBLE);
         }
-
-
+        
         @Override
         protected String doInBackground(Object... params) {
             Request.Builder builder = new Request.Builder();
