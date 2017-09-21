@@ -12,7 +12,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_title">
+
+        </activity>
+        <activity
+            android:name=".PopularMovies"
             android:label="@string/app_title">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,8 +29,14 @@
         <activity
             android:name=".DetailActivity"
             android:label="@string/title_activity_detail"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".SettingsActivity"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".SettingsActivity" />
+
+        <provider
+            android:name=".data.Provider"
+            android:authorities="com.example.thiago.myapplication"
+            android:exported="false" />
+
     </application>
 
 </manifest>

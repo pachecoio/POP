@@ -10,11 +10,14 @@
     <string name="pref_movie_top_rated" translatable="false">https://api.themoviedb.org/3/movie/top_rated?page=</string>
     <string name="pref_movie_complement" translatable="false">&amp;language=en-US&amp;api_key=</string>
 
+    <string name="pref_movie_favorites">favorites</string>
+
     <!-- The code below must be update with the MovieDB API key -->
     <string name="api_key">456cfaff4e1856ad9bc68406e43b271f</string>
 
     <string name="pref_movie_most_popular_label">Most Popular</string>
     <string name="pref_movie_top_rated_label">Top Rated</string>
+    <string name="pref_movie_favorites_label">Favorites</string>
 
     <string name="pref_filter_label">Filter</string>
     <string name="pref_filter_key" translatable="false">filter</string>

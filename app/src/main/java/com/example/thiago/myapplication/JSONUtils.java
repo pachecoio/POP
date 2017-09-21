@@ -48,7 +48,7 @@ public final class JSONUtils {
 
             Movie theMovie = new Movie(
                     movie.getString("vote_count"),
-                    movie.getString("id"),
+                    movie.getInt("id"),
                     movie.getString("video"),
                     movie.getString("vote_average"),
                     movie.getString("title"),
@@ -65,6 +65,25 @@ public final class JSONUtils {
         }
 
         return movieArrayList;
+    }
+
+    public static ArrayList<String> getVideoJSONFromString(Context context, String jsonStr) throws JSONException {
+
+
+
+        JSONObject json = new JSONObject(jsonStr);
+        JSONArray jsonArray = json.getJSONArray("results");
+
+        ArrayList<String> videoArrayList = new ArrayList<>();
+
+        for(int i = 0; i < jsonArray.length(); i++){
+
+            JSONObject videoKey = jsonArray.getJSONObject(i);
+            videoArrayList.add(videoKey.getString("key"));
+
+        }
+
+        return videoArrayList;
     }
 
 }

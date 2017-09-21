@@ -8,7 +8,7 @@ public class Movie {
 
     private int identifier;
     private String VOTE_COUNT;
-    private String ID;
+    private int ID;
     private String VIDEO;
     private String VOTE_AVERAGE;
     private String TITLE;
@@ -21,7 +21,7 @@ public class Movie {
     private String RELEASE_DATE;
 
     public Movie(String VOTE_COUNT,
-                 String ID,
+                 int ID,
                  String VIDEO,
                  String VOTE_AVERAGE,
                  String TITLE,
@@ -63,11 +63,11 @@ public class Movie {
         this.VOTE_COUNT = VOTE_COUNT;
     }
 
-    public String getID() {
+    public int getID() {
         return ID;
     }
 
-    public void setID(String ID) {
+    public void setID(int ID) {
         this.ID = ID;
     }
 

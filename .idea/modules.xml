@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/JSONTheMovieDb.iml" filepath="$PROJECT_DIR$/JSONTheMovieDb.iml" />
       <module fileurl="file://$PROJECT_DIR$/MyApplication.iml" filepath="$PROJECT_DIR$/MyApplication.iml" />
+      <module fileurl="file://$PROJECT_DIR$/POP.iml" filepath="$PROJECT_DIR$/POP.iml" />
       <module fileurl="file://$PROJECT_DIR$/PopularMovies.iml" filepath="$PROJECT_DIR$/PopularMovies.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
