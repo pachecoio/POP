@@ -250,7 +250,6 @@ public class PopularMovies extends AppCompatActivity implements SharedPreference
             showMovies();
         }
 
-
     @Override
         public void onLoaderReset(Loader<Cursor> loader) {
             showProgressBar();
@@ -343,22 +342,29 @@ public class PopularMovies extends AppCompatActivity implements SharedPreference
 
     @Override
     public void onListItemClick(int clickedItemIndex) {
-        temp.moveToPosition(clickedItemIndex);
-        Toast.makeText(this, "Clicked" + temp.getString(temp.getColumnIndex(Contract.FavoritesEntry.TITLE)), Toast.LENGTH_SHORT).show();
 
+        if(temp != null) {
+            temp.moveToPosition(clickedItemIndex);
+            Toast.makeText(this, "Clicked" + temp.getString(temp.getColumnIndex(Contract.FavoritesEntry.TITLE)), Toast.LENGTH_SHORT).show();
+
+        }else{
+            temp = getContentResolver().query(Contract.TempEntry.CONTENT_URI,null, null,null,null);
+            temp.moveToPosition(clickedItemIndex);
+            Log.i("movie id", String.valueOf(temp.getInt(temp.getColumnIndex(Contract.TempEntry._ID))));
+        }
         Intent intent = new Intent(PopularMovies.this, DetailActivity.class);
-        intent.putExtra("vote_count",temp.getString(temp.getColumnIndex(Contract.FavoritesEntry.VOTE_COUNT)));
-        intent.putExtra("id",temp.getInt(temp.getColumnIndex(Contract.FavoritesEntry.MOVIE_ID)));
+        intent.putExtra("vote_count", temp.getString(temp.getColumnIndex(Contract.FavoritesEntry.VOTE_COUNT)));
+        intent.putExtra("id", temp.getInt(temp.getColumnIndex(Contract.FavoritesEntry.MOVIE_ID)));
         intent.putExtra("video", temp.getString(temp.getColumnIndex(Contract.FavoritesEntry.VIDEO)));
         intent.putExtra("vote_average", temp.getString(temp.getColumnIndex(Contract.FavoritesEntry.VOTE_AVERAGE)));
-        intent.putExtra("title",temp.getString(temp.getColumnIndex(Contract.FavoritesEntry.TITLE)));
-        intent.putExtra("popularity",temp.getString(temp.getColumnIndex(Contract.FavoritesEntry.POPULARITY)));
-        intent.putExtra("poster_path",temp.getString(temp.getColumnIndex(Contract.FavoritesEntry.POSTER_PATH)));
-        intent.putExtra("original_language",temp.getString(temp.getColumnIndex(Contract.FavoritesEntry.ORIGINAL_LANGUAGE)));
-        intent.putExtra("original_title",temp.getString(temp.getColumnIndex(Contract.FavoritesEntry.ORIGINAL_TITLE)));
-        intent.putExtra("isAdult",temp.getInt(temp.getColumnIndex(Contract.FavoritesEntry.IS_ADULT)));
-        intent.putExtra("overview",temp.getString(temp.getColumnIndex(Contract.FavoritesEntry.OVERVIEW)));
-        intent.putExtra("release_date",temp.getString(temp.getColumnIndex(Contract.FavoritesEntry.RELEASE_DATE)));
+        intent.putExtra("title", temp.getString(temp.getColumnIndex(Contract.FavoritesEntry.TITLE)));
+        intent.putExtra("popularity", temp.getString(temp.getColumnIndex(Contract.FavoritesEntry.POPULARITY)));
+        intent.putExtra("poster_path", temp.getString(temp.getColumnIndex(Contract.FavoritesEntry.POSTER_PATH)));
+        intent.putExtra("original_language", temp.getString(temp.getColumnIndex(Contract.FavoritesEntry.ORIGINAL_LANGUAGE)));
+        intent.putExtra("original_title", temp.getString(temp.getColumnIndex(Contract.FavoritesEntry.ORIGINAL_TITLE)));
+        intent.putExtra("isAdult", temp.getInt(temp.getColumnIndex(Contract.FavoritesEntry.IS_ADULT)));
+        intent.putExtra("overview", temp.getString(temp.getColumnIndex(Contract.FavoritesEntry.OVERVIEW)));
+        intent.putExtra("release_date", temp.getString(temp.getColumnIndex(Contract.FavoritesEntry.RELEASE_DATE)));
         startActivity(intent);
     }
 
