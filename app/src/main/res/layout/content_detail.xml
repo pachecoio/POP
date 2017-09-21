@@ -53,7 +53,7 @@
             android:id="@+id/user_rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#FFFFFF"
+            android:textColor="#efec39"
             android:textSize="18sp"
             android:layout_toRightOf="@id/movie_poster"
             android:layout_below="@id/release_date"
@@ -61,21 +61,13 @@
             android:layout_marginRight="20dp"
             android:layout_marginBottom="10dp" />
 
-        <TextView
-            android:id="@+id/overview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:layout_below="@id/movie_poster"
-            android:layout_margin="20dp" />
-
         <RelativeLayout
             android:id="@+id/line"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#868686"
-            android:layout_below="@id/overview"
+            android:layout_below="@id/user_rating"
+            android:layout_toRightOf="@id/movie_poster"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"/>
 
@@ -86,18 +78,55 @@
             android:fontFamily="monospace"
             android:textSize="22sp"
             android:textColor="#FFFFFF"
-            android:layout_below="@id/line"
-            android:text="Trailers"
-            android:layout_margin="20dp"/>
+            android:layout_below="@id/user_rating"
+            android:layout_toRightOf="@id/movie_poster"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:text="Trailers"/>
 
         <ImageView
             android:id="@+id/trailer_icon_1"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_below="@id/trailers"
+            android:layout_toRightOf="@id/movie_poster"
             android:layout_marginTop="10dp"
-            android:layout_marginLeft="40dp"
+            android:layout_marginLeft="20dp"
             android:background="@drawable/ic_play_circle_filled_white_24dp"/>
+        <ImageView
+            android:id="@+id/trailer_icon_2"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@id/trailers"
+            android:layout_toRightOf="@id/trailer_icon_1"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/ic_play_circle_filled_white_24dp"/>
+        <ImageView
+            android:id="@+id/trailer_icon_3"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@id/trailers"
+            android:layout_toRightOf="@id/trailer_icon_2"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/ic_play_circle_filled_white_24dp"/>
+
+
+        <TextView
+            android:id="@+id/overview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:layout_below="@id/movie_poster"
+            android:layout_margin="20dp" />
+
+
+
+
+
+
 
     </RelativeLayout>
 
