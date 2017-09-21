@@ -1,6 +1,7 @@
 package com.example.thiago.myapplication;
 
 import android.content.Context;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -70,6 +71,7 @@ public final class JSONUtils {
     public static ArrayList<String> getVideoJSONFromString(Context context, String jsonStr) throws JSONException {
 
 
+        Log.i("url",jsonStr);
 
         JSONObject json = new JSONObject(jsonStr);
         JSONArray jsonArray = json.getJSONArray("results");
@@ -85,5 +87,7 @@ public final class JSONUtils {
 
         return videoArrayList;
     }
+
+
 
 }

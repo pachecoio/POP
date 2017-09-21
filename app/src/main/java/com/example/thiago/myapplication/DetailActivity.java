@@ -4,14 +4,20 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -30,9 +36,16 @@ import com.squareup.picasso.Target;
 
 import org.json.JSONException;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
-public class DetailActivity extends AppCompatActivity {
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
+public class DetailActivity extends AppCompatActivity{
 
     private final String IMAGE_URL = "https://image.tmdb.org/t/p/w500/";
 
@@ -45,6 +58,7 @@ public class DetailActivity extends AppCompatActivity {
     private static final String MOVIE_TRAILER_URL_BEGIN = "https://api.themoviedb.org/3/movie/";
     private static final String MOVIE_TRAILER_URL_TYPE = "/videos?api_key=";
     private static final String MOVIE_LANGUAGE = "&language=en-US";
+    private String JSONString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,22 +129,55 @@ public class DetailActivity extends AppCompatActivity {
             mUserRatingTextView.append(intent.getStringExtra("vote_average"));
             mReleaseDateTextView.append(intent.getStringExtra("release_date"));
 
-            String url = MOVIE_TRAILER_URL_BEGIN + intent.getIntExtra("id",1) + MOVIE_TRAILER_URL_TYPE + getString(R.string.api_key) + MOVIE_LANGUAGE;
+            String url = getString(R.string.trailer_base_url) + intent.getIntExtra("id",1) + getString(R.string.trailer_type_url) + getString(R.string.api_key) + getString(R.string.trailer_language_url);
+
             Log.i("url",url);
-            try {
-                ArrayList<String> videoKey = JSONUtils.getVideoJSONFromString(this, url);
 
-                for(String key : videoKey){
-                    Log.i("Trailer ",key);
-                }
+            OkHttpHandler okHttpHandler = new OkHttpHandler();
+            okHttpHandler.execute(url);
 
-            } catch (JSONException e) {
-                e.printStackTrace();
-                e.getMessage();
-            }
         }
 
 
+    }
+
+    public class OkHttpHandler extends AsyncTask<Object, Object, String>{
+
+        OkHttpClient client = new OkHttpClient();
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(Object... params) {
+            Request.Builder builder = new Request.Builder();
+            builder.url((String) params[0]);
+            Request request = builder.build();
+            try {
+                Response response = client.newCall(request).execute();
+                return response.body().string();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+
+            try{
+                ArrayList<String> videoArrayList = JSONUtils.getVideoJSONFromString(DetailActivity.this, s);
+                for(String videoKey : videoArrayList){
+                    Log.i("Video key", videoKey);
+                }
+            }catch (JSONException e){
+
+            }
+
+        }
     }
 
     public String getRotation(Context context){
@@ -163,5 +210,6 @@ public class DetailActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 
 }
