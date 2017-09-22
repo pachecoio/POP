@@ -55,35 +55,11 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MovieViewH
     @Override
     public void onBindViewHolder(final MovieViewHolder holder, int position) {
 
-        int idIndex = mCursor.getColumnIndex(Contract.FavoritesEntry._ID);
-        int voteCountIndex = mCursor.getColumnIndex(Contract.FavoritesEntry.VOTE_COUNT);
-        int videoIndex = mCursor.getColumnIndex(Contract.FavoritesEntry.VIDEO);
-        int voteAverageIndex = mCursor.getColumnIndex(Contract.FavoritesEntry.VOTE_AVERAGE);
-        int titleIndex = mCursor.getColumnIndex(Contract.FavoritesEntry.TITLE);
-        int popularityIndex = mCursor.getColumnIndex(Contract.FavoritesEntry.POPULARITY);
         int posterPathIndex = mCursor.getColumnIndex(Contract.FavoritesEntry.POSTER_PATH);
-        int originalLanguageIndex = mCursor.getColumnIndex(Contract.FavoritesEntry.ORIGINAL_LANGUAGE);
-        int originalTitleIndex = mCursor.getColumnIndex(Contract.FavoritesEntry.ORIGINAL_TITLE);
-        int isAdultIndex = mCursor.getColumnIndex(Contract.FavoritesEntry.IS_ADULT);
-        int overviewIndex = mCursor.getColumnIndex(Contract.FavoritesEntry.OVERVIEW);
-        int releaseDateIndex = mCursor.getColumnIndex(Contract.FavoritesEntry.RELEASE_DATE);
 
         mCursor.moveToPosition(position);
 
         String posterPath = mCursor.getString(posterPathIndex);
-        /*
-        final int id = mCursor.getInt(idIndex);
-        String voteCount = mCursor.getString(voteCountIndex);
-        String video = mCursor.getString(videoIndex);
-        String voteAverage = mCursor.getString(voteAverageIndex);
-        String title = mCursor.getString(titleIndex);
-        String popularity = mCursor.getString(popularityIndex);
-        String originalLanguage = mCursor.getString(originalLanguageIndex);
-        String originalTitle = mCursor.getString(originalTitleIndex);
-        int isAdult = mCursor.getInt(isAdultIndex);
-        String overview = mCursor.getString(overviewIndex);
-        String releaseDate = mCursor.getString(releaseDateIndex);
-        */
 
         final String imageLink = IMAGE_URL + posterPath;
         Picasso

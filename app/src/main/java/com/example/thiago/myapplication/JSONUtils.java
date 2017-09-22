@@ -88,6 +88,29 @@ public final class JSONUtils {
         return videoArrayList;
     }
 
+    public static ArrayList<Review> getReviewsFromString(Context context, String jsonStr) throws JSONException {
 
+
+        Log.i("url",jsonStr);
+
+        JSONObject json = new JSONObject(jsonStr);
+        JSONArray jsonArray = json.getJSONArray("results");
+
+        ArrayList<Review> reviewArrayList = new ArrayList<>();
+        Review review;
+
+        for(int i = 0; i < jsonArray.length(); i++){
+
+            JSONObject reviewObj = jsonArray.getJSONObject(i);
+            review = new Review(reviewObj.getString("id"),
+                    reviewObj.getString("author"),
+                    reviewObj.getString("content"),
+                    reviewObj.getString("url"));
+            reviewArrayList.add(review);
+
+        }
+
+        return reviewArrayList;
+    }
 
 }

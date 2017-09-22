@@ -82,7 +82,7 @@
             android:layout_toRightOf="@id/movie_poster"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="20dp"
-            android:text="Trailers"/>
+            android:text="Trailer"/>
 
         <ImageView
             android:id="@+id/trailer_icon_1"
@@ -92,25 +92,8 @@
             android:layout_toRightOf="@id/movie_poster"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="20dp"
-            android:background="@drawable/ic_play_circle_filled_white_24dp"/>
-        <ImageView
-            android:id="@+id/trailer_icon_2"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_below="@id/trailers"
-            android:layout_toRightOf="@id/trailer_icon_1"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/ic_play_circle_filled_white_24dp"/>
-        <ImageView
-            android:id="@+id/trailer_icon_3"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_below="@id/trailers"
-            android:layout_toRightOf="@id/trailer_icon_2"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/ic_play_circle_filled_white_24dp"/>
+            android:background="@drawable/ic_play_circle_filled_white_24dp"
+            android:onClick="onClickTrailer"/>
 
 
         <TextView
@@ -122,11 +105,37 @@
             android:layout_below="@id/movie_poster"
             android:layout_margin="20dp" />
 
+        <RelativeLayout
+            android:id="@+id/line2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#868686"
+            android:layout_below="@id/overview"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"/>
 
+        <TextView
+            android:id="@+id/reviews"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:textSize="22sp"
+            android:textColor="#FFFFFF"
+            android:layout_below="@id/line2"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:text="Reviews"/>
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_reviews"
+            android:layout_below="@id/reviews"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-
-
+        </android.support.v7.widget.RecyclerView>
 
     </RelativeLayout>
 

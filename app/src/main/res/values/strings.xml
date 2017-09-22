@@ -10,9 +10,11 @@
     <string name="pref_movie_top_rated" translatable="false">https://api.themoviedb.org/3/movie/top_rated?page=</string>
     <string name="pref_movie_complement" translatable="false">&amp;language=en-US&amp;api_key=</string>
 
-    <string name="trailer_base_url">https://api.themoviedb.org/3/movie/</string>
+    <string name="movie_base_url">https://api.themoviedb.org/3/movie/</string>
     <string name="trailer_type_url">/videos?api_key=</string>
-    <string name="trailer_language_url">&amp;language=en-US</string>
+    <string name="movie_language_url">&amp;language=en-US</string>
+
+    <string name="review_type_url">/reviews?api_key=</string>
 
     <string name="pref_movie_favorites">favorites</string>
 

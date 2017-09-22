@@ -12,21 +12,28 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.print.PrintAttributes;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.AutoScrollHelper;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Surface;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +47,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -54,11 +62,17 @@ public class DetailActivity extends AppCompatActivity{
     private TextView mUserRatingTextView;
     private TextView mReleaseDateTextView;
     private ImageView moviePosterImageView;
+    private RecyclerView rvReviews;
 
-    private static final String MOVIE_TRAILER_URL_BEGIN = "https://api.themoviedb.org/3/movie/";
-    private static final String MOVIE_TRAILER_URL_TYPE = "/videos?api_key=";
-    private static final String MOVIE_LANGUAGE = "&language=en-US";
-    private String JSONString;
+    RelativeLayout contentRelativeLayout;
+
+    public static final String YOUTUBE_BASE_URL = "http://www.youtube.com/watch?v=";
+
+    String youtubeUrl;
+
+    View recentView;
+
+    LinearLayoutManager layoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +94,8 @@ public class DetailActivity extends AppCompatActivity{
         mUserRatingTextView = (TextView)findViewById(R.id.user_rating);
         mReleaseDateTextView = (TextView)findViewById(R.id.release_date);
         moviePosterImageView = (ImageView)findViewById(R.id.movie_poster);
+        rvReviews = (RecyclerView)findViewById(R.id.rv_reviews);
+
 
         final Intent intent = getIntent();
 
@@ -129,16 +145,29 @@ public class DetailActivity extends AppCompatActivity{
             mUserRatingTextView.append(intent.getStringExtra("vote_average"));
             mReleaseDateTextView.append(intent.getStringExtra("release_date"));
 
-            String url = getString(R.string.trailer_base_url) + intent.getIntExtra("id",1) + getString(R.string.trailer_type_url) + getString(R.string.api_key) + getString(R.string.trailer_language_url);
+            String url = getString(R.string.movie_base_url) + intent.getIntExtra("id",1) + getString(R.string.trailer_type_url) + getString(R.string.api_key) + getString(R.string.movie_language_url);
 
             Log.i("url",url);
 
             OkHttpHandler okHttpHandler = new OkHttpHandler();
             okHttpHandler.execute(url);
 
+            String reviewUrl = getString(R.string.movie_base_url) + intent.getIntExtra("id",1) + getString(R.string.review_type_url) + getString(R.string.api_key) + getString(R.string.movie_language_url);
+
+            Log.i("review url", reviewUrl);
+            GetReviews getReviews = new GetReviews();
+            getReviews.execute(reviewUrl);
         }
 
 
+    }
+
+    public void onClickTrailer(View view){
+        if(youtubeUrl != null) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(YOUTUBE_BASE_URL + youtubeUrl)));
+        }else{
+            Toast.makeText(this, "Trailer not found, please try again later!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public class OkHttpHandler extends AsyncTask<Object, Object, String>{
@@ -172,6 +201,7 @@ public class DetailActivity extends AppCompatActivity{
                 ArrayList<String> videoArrayList = JSONUtils.getVideoJSONFromString(DetailActivity.this, s);
                 for(String videoKey : videoArrayList){
                     Log.i("Video key", videoKey);
+                    youtubeUrl = videoKey;
                 }
             }catch (JSONException e){
 
@@ -179,6 +209,51 @@ public class DetailActivity extends AppCompatActivity{
 
         }
     }
+
+    public class GetReviews extends AsyncTask<Object, Object, String>{
+
+        OkHttpClient client = new OkHttpClient();
+
+        @Override
+        protected String doInBackground(Object... params) {
+            Request.Builder builder = new Request.Builder();
+            builder.url((String) params[0]);
+            Request request = builder.build();
+            try {
+                Response response = client.newCall(request).execute();
+                return response.body().string();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+
+            try{
+                ArrayList<Review> reviewArrayList = JSONUtils.getReviewsFromString(DetailActivity.this, s);
+                if(reviewArrayList!=null) {
+
+                    layoutManager = new LinearLayoutManager(DetailActivity.this);
+                    rvReviews.setLayoutManager(layoutManager);
+                    rvReviews.setHasFixedSize(true);
+                    ReviewAdapter reviewAdapter = new ReviewAdapter(reviewArrayList.size(),reviewArrayList);
+                    rvReviews.setAdapter(reviewAdapter);
+
+                    for (Review review : reviewArrayList) {
+                        Log.i("review id", review.getId());
+
+                    }
+                }
+            }catch (JSONException e){
+
+            }
+
+        }
+    }
+
 
     public String getRotation(Context context){
         final int rotation = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getOrientation();
