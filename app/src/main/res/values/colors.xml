@@ -8,4 +8,21 @@
     <color name="grey">#a6a6a6</color>
     <color name="detail_background">#363636</color>
 
+    <color name="review_item_background">#3b3b3b</color>
+    <color name="review_item_text_color">#b1b1b1</color>
+
+    <color name="review_item_side_line">#818181</color>
+
+    <color name="review_item_content_background">#393939</color>
+
+    <color name="review_item_line2_background">#5e5e5e</color>
+
+    <color name="dark_effect">#73000000</color>
+
+    <color name="text_white">#FFFFFF</color>
+
+    <color name="user_rating_color">#efec39</color>
+
+    <color name="user_rating_line_color">#868686</color>
+
 </resources>

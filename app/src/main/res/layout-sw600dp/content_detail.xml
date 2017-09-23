@@ -13,60 +13,63 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:background="@color/detail_background"/>
+
         <ImageView
             android:id="@+id/movie_poster"
-            android:layout_width="@dimen/movie_poster_width"
-            android:layout_height="@dimen/movie_poster_height"
-            android:layout_margin="@dimen/movie_poster_margin"
-            app:srcCompat="@android:color/holo_blue_bright"
-            android:contentDescription="@string/movie_poster"/>
+            android:layout_width="150dp"
+            android:layout_height="230dp"
+            android:layout_margin="15dp"
+            app:srcCompat="@android:color/holo_blue_bright"/>
 
         <TextView
             android:id="@+id/original_title"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="monospace"
-            android:textSize="@dimen/original_title_text_size"
-            android:textColor="@color/text_white"
+            android:textSize="22sp"
+            android:textColor="#FFFFFF"
             android:layout_toEndOf="@id/movie_poster"
-            android:layout_marginTop="@dimen/original_title_margin_top"
-            android:layout_marginLeft="@dimen/original_title_margin_left_right"
-            android:layout_marginRight="@dimen/original_title_margin_left_right"
-            android:layout_marginBottom="@dimen/original_title_margin_bottom"/>
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"/>
 
         <TextView
             android:id="@+id/release_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/text_white"
-            android:textSize="@dimen/release_date_text_size"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
             android:layout_toEndOf="@id/movie_poster"
             android:layout_below="@id/original_title"
-            android:layout_marginLeft="@dimen/original_title_margin_left_right"
-            android:layout_marginRight="@dimen/original_title_margin_left_right"
-            android:layout_marginBottom="@dimen/original_title_margin_bottom" />
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp" />
 
         <TextView
             android:id="@+id/user_rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/user_rating_color"
-            android:textSize="@dimen/release_date_text_size"
+            android:textColor="#efec39"
+            android:textSize="18sp"
             android:layout_toEndOf="@id/movie_poster"
             android:layout_below="@id/release_date"
-            android:layout_marginLeft="@dimen/original_title_margin_left_right"
-            android:layout_marginRight="@dimen/original_title_margin_left_right"
-            android:layout_marginBottom="@dimen/original_title_margin_left_right" />
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp" />
 
         <RelativeLayout
             android:id="@+id/line"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/user_rating_line_color"
-            android:layout_below="@id/user_rating"
-            android:layout_toEndOf="@id/movie_poster"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"/>
+            android:background="#868686"
+            android:layout_below="@id/movie_poster"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"/>
 
         <TextView
             android:id="@+id/trailers"
@@ -76,32 +79,32 @@
             android:textSize="22sp"
             android:textColor="#FFFFFF"
             android:layout_below="@id/user_rating"
-            android:layout_toEndOf="@id/movie_poster"
-            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@id/trailer_icon_1"
+            android:layout_marginTop="15dp"
             android:layout_marginStart="20dp"
             android:text="@string/trailer"/>
 
         <ImageView
             android:id="@+id/trailer_icon_1"
+            android:contentDescription="@string/trailer_icon"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_below="@id/trailers"
+            android:layout_below="@id/user_rating"
             android:layout_toEndOf="@id/movie_poster"
             android:layout_marginTop="10dp"
             android:layout_marginStart="20dp"
             android:background="@drawable/ic_play_circle_filled_white_24dp"
-            android:onClick="onClickTrailer"
-            android:contentDescription="@string/trailer_icon"/>
+            android:onClick="onClickTrailer"/>
 
 
         <TextView
             android:id="@+id/overview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/text_white"
-            android:textSize="@dimen/release_date_text_size"
-            android:layout_below="@id/trailer_icon_1"
-            android:layout_margin="@dimen/original_title_margin_left_right" />
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:layout_below="@id/movie_poster"
+            android:layout_margin="20dp" />
 
         <RelativeLayout
             android:id="@+id/line2"

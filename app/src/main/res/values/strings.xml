@@ -14,6 +14,16 @@
     <string name="trailer_type_url">/videos?api_key=</string>
     <string name="movie_language_url">&amp;language=en-US</string>
 
+    <string name="movie_poster">Movie Poster</string>
+
+    <string name="trailer">Trailer</string>
+    <string name="trailer_icon">Trailer Icon</string>
+    <string name="reviews">Reviews</string>
+
+    <string name="no_reviews_yet">This movie does not have reviews yet</string>
+
+    <string name="poster_background">Poster</string>
+
     <string name="review_type_url">/reviews?api_key=</string>
 
     <string name="pref_movie_favorites">favorites</string>

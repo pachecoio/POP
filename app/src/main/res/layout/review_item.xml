@@ -1,46 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#3b3b3b">
+    android:layout_height="wrap_content"
+    android:background="@color/review_item_background">
 
         <TextView
             android:id="@+id/author_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:text="A review by Thiago pacheco"
-            android:textColor="#b1b1b1"
-            android:textSize="18sp" />
+            android:layout_margin="@dimen/author_name_margin"
+            android:textColor="@color/review_item_text_color"
+            android:textSize="@dimen/author_name_text_size" />
+
+        <ImageView
+            android:layout_width="@dimen/insert_comment_white_size"
+            android:layout_height="@dimen/insert_comment_white_size"
+            android:background="@drawable/ic_insert_comment_white_24dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/insert_comment_white_margin_top"
+            android:layout_marginEnd="@dimen/insert_comment_white_margin_right"/>
 
         <RelativeLayout
             android:id="@+id/sideline"
-            android:layout_width="2dp"
+            android:layout_width="@dimen/review_item_sideline_width"
             android:layout_height="match_parent"
             android:layout_below="@id/author_name"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:background="#818181"></RelativeLayout>
+            android:layout_marginLeft="@dimen/review_item_sideline_margin"
+            android:layout_marginRight="@dimen/review_item_sideline_margin"
+            android:background="@color/review_item_side_line"/>
 
         <TextView
             android:id="@+id/content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/author_name"
-            android:layout_toRightOf="@id/sideline"
-            android:layout_marginRight="20dp"
-            android:padding="5dp"
-            android:text="Lorem Ipsum é simplesmente uma simulação de texto da indústria tipográfica e de impressos, e vem sendo utilizado desde o século XVI, quando um impressor desconhecido pegou uma bandeja de tipos e os embaralhou para fazer um livro de modelos de tipos. "
-            android:textColor="#b1b1b1"
-            android:background="#393939"
-            android:textSize="16sp" />
+            android:layout_toEndOf="@id/sideline"
+            android:layout_marginEnd="@dimen/review_item_content_margin_right"
+            android:padding="@dimen/review_item_content_padding"
+            android:textColor="@color/review_item_text_color"
+            android:background="@color/review_item_content_background"
+            android:textSize="@dimen/review_item_content_size" />
+
+        <RelativeLayout
+            android:id="@+id/line2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/review_item_line2_height"
+            android:background="@color/review_item_line2_background"
+            android:layout_below="@id/content"
+            android:layout_marginTop="@dimen/review_item_line2_margin_top"
+            android:layout_marginLeft="@dimen/review_item_line2_margin_left_right"
+            android:layout_marginRight="@dimen/review_item_line2_margin_left_right"/>
 
 
 
-    </RelativeLayout>
-
-</LinearLayout>
+</RelativeLayout>

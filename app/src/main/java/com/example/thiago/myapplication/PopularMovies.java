@@ -44,10 +44,6 @@ public class PopularMovies extends AppCompatActivity implements SharedPreference
     private ProgressBar progressBar;
     private TextView errorMessage;
 
-    private TextView numberOfPages;
-
-    private ImageView arrowNext;
-    private ImageView arrowPrevious;
 
     private int pages = 1;
 
@@ -57,12 +53,13 @@ public class PopularMovies extends AppCompatActivity implements SharedPreference
 
     CustomAdapter mAdapter;
 
-    boolean mIsLoading = true;
+    boolean mIsLoading = false;
+
+    String prefMovieString;
+
     int visibleItemCount;
     int totalItemCount;
     int pastVisibleItems;
-
-    String prefMovieString;
 
     Cursor temp;
 
@@ -74,9 +71,6 @@ public class PopularMovies extends AppCompatActivity implements SharedPreference
         progressBar = (ProgressBar)findViewById(R.id.progress_bar);
         errorMessage = (TextView)findViewById(R.id.error_message);
         errorMessage.setText(getString(R.string.error_message));
-        arrowNext = (ImageView)findViewById(R.id.arrow_next);
-        arrowPrevious = (ImageView)findViewById(R.id.arrow_previous);
-        numberOfPages = (TextView)findViewById(R.id.number_of_page);
         rvMovies = (RecyclerView)findViewById(R.id.rv_movies);
 
         layoutManager = new GridLayoutManager(PopularMovies.this, numberOfColumns());
@@ -85,6 +79,7 @@ public class PopularMovies extends AppCompatActivity implements SharedPreference
 
         mAdapter = new CustomAdapter(this, this);
         rvMovies.setAdapter(mAdapter);
+        showListOfMovies();
 
         rvMovies.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -92,19 +87,24 @@ public class PopularMovies extends AppCompatActivity implements SharedPreference
                 super.onScrolled(recyclerView, dx, dy);
                 if (mIsLoading)
                     return;
-                updateItemViewCount();
+                visibleItemCount = layoutManager.getChildCount();
+                totalItemCount = layoutManager.getItemCount();
+                pastVisibleItems = layoutManager.findFirstVisibleItemPosition();
                 if (pastVisibleItems + visibleItemCount >= totalItemCount) {
-                    Log.i("scroll","scrolled");
+                    if(isNetworkAvailable()) {
+                        loadMore();
+                        mIsLoading = true;
+                    }else{
+                        Toast.makeText(PopularMovies.this, "No internet connection, try again later!", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
-        showListOfMovies();
     }
 
-    public void updateItemViewCount(){
-        visibleItemCount = layoutManager.getChildCount();
-        totalItemCount = layoutManager.getItemCount();
-        pastVisibleItems = layoutManager.findFirstVisibleItemPosition();
+    private void loadMore() {
+        pages++;
+        onRestartLoader();
     }
 
     private int numberOfColumns() {
@@ -125,10 +125,8 @@ public class PopularMovies extends AppCompatActivity implements SharedPreference
     }
 
     public void showListOfMovies(){
-
-            getSupportLoaderManager().initLoader(TASK_LOADER_ID, null, this);
-
-            numberOfPages.setText(getResources().getString(R.string.page) + " " + String.valueOf(pages));
+        showProgressBar();
+        getSupportLoaderManager().initLoader(TASK_LOADER_ID, null, this);
     }
 
     public void showMovies(){
@@ -145,28 +143,17 @@ public class PopularMovies extends AppCompatActivity implements SharedPreference
 
     public void showProgressBar(){
         progressBar.setVisibility(View.VISIBLE);
-        rvMovies.setVisibility(View.INVISIBLE);
+        //rvMovies.setVisibility(View.INVISIBLE);
         errorMessage.setVisibility(View.INVISIBLE);
     }
 
-    public void showNextPage(View view){
-        pages++;
-        onRestartLoader();
-        rvMovies.smoothScrollToPosition(0);
-    }
-
-    public void showPreviousPage(View view){
-        if(pages > 1) {
-            pages--;
-            onRestartLoader();
-            rvMovies.smoothScrollToPosition(0);
-        }
-    }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if(key.equals(getString(R.string.pref_filter_key))){
             pages = 1;
+            getContentResolver().delete(Contract.TempEntry.CONTENT_URI,null,null);
+            rvMovies.smoothScrollToPosition(0);
             onRestartLoader();
         }
     }
@@ -179,19 +166,17 @@ public class PopularMovies extends AppCompatActivity implements SharedPreference
     //LOADER
         @Override
         public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-
             Log.i("location", "oncreateloader");
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(PopularMovies.this);
             prefMovieString = sharedPreferences.getString(getString(R.string.pref_filter_key), getString(R.string.pref_movie_most_popular));
             sharedPreferences.registerOnSharedPreferenceChangeListener(PopularMovies.this);
-            showProgressBar();
             return new AsyncTaskLoader<Cursor>(this){
 
                 Cursor mTaskData = null;
 
                 @Override
                 protected void onStartLoading() {
-                    mTaskData = null;
+                    //mTaskData = null;
                     if (mTaskData != null) {
                         Log.i("location","On startloading is not null");
                         showProgressBar();
@@ -247,12 +232,13 @@ public class PopularMovies extends AppCompatActivity implements SharedPreference
         public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
             if(data == null){
                 mAdapter.swapCursor(null);
+                Log.i("cursor value","is null");
                 showErrorMessage();
             }else {
                 mAdapter.swapCursor(data);
                 showMovies();
-                numberOfPages.setText(getResources().getString(R.string.page) + " " + String.valueOf(pages));
             }
+            mIsLoading = false;
         }
 
     @Override
@@ -277,7 +263,6 @@ public class PopularMovies extends AppCompatActivity implements SharedPreference
 
         if(isNetworkAvailable()) {
 
-            getContentResolver().delete(Contract.TempEntry.CONTENT_URI,null,null);
 
             OkHttpClient client = new OkHttpClient();
 
@@ -347,21 +332,26 @@ public class PopularMovies extends AppCompatActivity implements SharedPreference
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        Log.i("temp","temp recovered");
     }
 
     @Override
     public void onListItemClick(int clickedItemIndex) {
-
-        if(temp != null) {
+    try{
+        if(temp.getCount() > 0){
             temp.moveToPosition(clickedItemIndex);
-            Toast.makeText(this, "Clicked" + temp.getString(temp.getColumnIndex(Contract.FavoritesEntry.TITLE)), Toast.LENGTH_SHORT).show();
-
-        }else {
-            temp = getContentResolver().query(Contract.TempEntry.CONTENT_URI, null, null, null, null);
-            temp.moveToPosition(clickedItemIndex);
-            Log.i("movie id", String.valueOf(temp.getInt(temp.getColumnIndex(Contract.TempEntry._ID))));
         }
+    }catch (Exception e){
+        e.printStackTrace();
+        temp =  getContentResolver().query(Contract.TempEntry.CONTENT_URI,
+                null,
+                null,
+                null,
+                null);
+        temp.moveToPosition(clickedItemIndex);
+        Log.i("movie id", String.valueOf(temp.getInt(temp.getColumnIndex(Contract.TempEntry._ID))));
+    }
+
+
         Intent intent = new Intent(PopularMovies.this, DetailActivity.class);
         intent.putExtra("vote_count", temp.getString(temp.getColumnIndex(Contract.FavoritesEntry.VOTE_COUNT)));
         intent.putExtra("id", temp.getInt(temp.getColumnIndex(Contract.FavoritesEntry.MOVIE_ID)));

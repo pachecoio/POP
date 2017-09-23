@@ -33,6 +33,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -63,6 +64,8 @@ public class DetailActivity extends AppCompatActivity{
     private TextView mReleaseDateTextView;
     private ImageView moviePosterImageView;
     private RecyclerView rvReviews;
+    private ProgressBar progressBar;
+    TextView noReviewsTv;
 
     RelativeLayout contentRelativeLayout;
 
@@ -80,8 +83,11 @@ public class DetailActivity extends AppCompatActivity{
         setContentView(R.layout.activity_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        try {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,6 +101,8 @@ public class DetailActivity extends AppCompatActivity{
         mReleaseDateTextView = (TextView)findViewById(R.id.release_date);
         moviePosterImageView = (ImageView)findViewById(R.id.movie_poster);
         rvReviews = (RecyclerView)findViewById(R.id.rv_reviews);
+        progressBar = (ProgressBar)findViewById(R.id.progressBar);
+        noReviewsTv = (TextView)findViewById(R.id.no_reviews);
 
 
         final Intent intent = getIntent();
@@ -162,6 +170,24 @@ public class DetailActivity extends AppCompatActivity{
 
     }
 
+    public void showErrorMessage(){
+        rvReviews.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.INVISIBLE);
+        noReviewsTv.setVisibility(View.VISIBLE);
+    }
+
+    public void showProgressBar(){
+        rvReviews.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
+        noReviewsTv.setVisibility(View.INVISIBLE);
+    }
+
+    public void showReviews(){
+        rvReviews.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.INVISIBLE);
+        noReviewsTv.setVisibility(View.INVISIBLE);
+    }
+
     public void onClickTrailer(View view){
         if(youtubeUrl != null) {
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(YOUTUBE_BASE_URL + youtubeUrl)));
@@ -199,12 +225,13 @@ public class DetailActivity extends AppCompatActivity{
 
             try{
                 ArrayList<String> videoArrayList = JSONUtils.getVideoJSONFromString(DetailActivity.this, s);
-                for(String videoKey : videoArrayList){
-                    Log.i("Video key", videoKey);
-                    youtubeUrl = videoKey;
+                if(videoArrayList != null) {
+                    youtubeUrl = videoArrayList.get(0);
+                }else{
+                    youtubeUrl = null;
                 }
             }catch (JSONException e){
-
+                e.printStackTrace();
             }
 
         }
@@ -213,6 +240,12 @@ public class DetailActivity extends AppCompatActivity{
     public class GetReviews extends AsyncTask<Object, Object, String>{
 
         OkHttpClient client = new OkHttpClient();
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showProgressBar();
+        }
 
         @Override
         protected String doInBackground(Object... params) {
@@ -241,14 +274,13 @@ public class DetailActivity extends AppCompatActivity{
                     rvReviews.setHasFixedSize(true);
                     ReviewAdapter reviewAdapter = new ReviewAdapter(reviewArrayList.size(),reviewArrayList);
                     rvReviews.setAdapter(reviewAdapter);
-
-                    for (Review review : reviewArrayList) {
-                        Log.i("review id", review.getId());
-
-                    }
+                    showReviews();
+                }else{
+                    showErrorMessage();
                 }
             }catch (JSONException e){
-
+                e.printStackTrace();
+                showErrorMessage();
             }
 
         }

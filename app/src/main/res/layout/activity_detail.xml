@@ -14,7 +14,6 @@
         android:layout_height="@dimen/app_bar_height"
         android:fitsSystemWindows="true"
         android:theme="@style/AppTheme.AppBarOverlay"
-        android:elevation="5dp"
         >
 
         <android.support.design.widget.CollapsingToolbarLayout
@@ -30,12 +29,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
+                android:contentDescription="@string/poster_background"
                 />
             <ImageView
                 android:id="@+id/darkeffect"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#73000000"
+                android:background="@color/dark_effect"
                 />
 
             <android.support.v7.widget.Toolbar
@@ -57,7 +57,6 @@
         android:layout_margin="@dimen/fab_margin"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end"
-        app:srcCompat="@drawable/ic_favorite_white_24dp"
-        android:elevation="5dp"/>
+        app:srcCompat="@drawable/ic_favorite_white_24dp"/>
 
 </android.support.design.widget.CoordinatorLayout>

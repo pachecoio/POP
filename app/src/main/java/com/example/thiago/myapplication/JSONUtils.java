@@ -9,9 +9,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-/**
- * Created by thiagop on 8/16/17.
- */
 
 public final class JSONUtils {
 
@@ -34,8 +31,6 @@ public final class JSONUtils {
 
         JSONObject json = new JSONObject(jsonStr);
         JSONArray jsonArray = json.getJSONArray("results");
-
-        parsedData = new String[jsonArray.length()];
 
         //Movie[] movieArray = new Movie[jsonArray.length()];
         ArrayList<Movie> movieArrayList = new ArrayList<>();
@@ -78,14 +73,19 @@ public final class JSONUtils {
 
         ArrayList<String> videoArrayList = new ArrayList<>();
 
-        for(int i = 0; i < jsonArray.length(); i++){
+        if(jsonArray.length() > 0) {
+            for (int i = 0; i < jsonArray.length(); i++) {
 
-            JSONObject videoKey = jsonArray.getJSONObject(i);
-            videoArrayList.add(videoKey.getString("key"));
+                JSONObject videoKey = jsonArray.getJSONObject(i);
+                videoArrayList.add(videoKey.getString("key"));
 
+            }
+            return videoArrayList;
+        }else{
+            return null;
         }
 
-        return videoArrayList;
+
     }
 
     public static ArrayList<Review> getReviewsFromString(Context context, String jsonStr) throws JSONException {
@@ -99,15 +99,19 @@ public final class JSONUtils {
         ArrayList<Review> reviewArrayList = new ArrayList<>();
         Review review;
 
-        for(int i = 0; i < jsonArray.length(); i++){
+        if(jsonArray.length() != 0) {
+            for (int i = 0; i < jsonArray.length(); i++) {
 
-            JSONObject reviewObj = jsonArray.getJSONObject(i);
-            review = new Review(reviewObj.getString("id"),
-                    reviewObj.getString("author"),
-                    reviewObj.getString("content"),
-                    reviewObj.getString("url"));
-            reviewArrayList.add(review);
+                JSONObject reviewObj = jsonArray.getJSONObject(i);
+                review = new Review(reviewObj.getString("id"),
+                        reviewObj.getString("author"),
+                        reviewObj.getString("content"),
+                        reviewObj.getString("url"));
+                reviewArrayList.add(review);
 
+            }
+        }else{
+            reviewArrayList = null;
         }
 
         return reviewArrayList;
